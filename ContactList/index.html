@@ -1,0 +1,222 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Marionette Contact Manager</title>
+      <link href="assets/css/EYstyle.css" rel="stylesheet" />
+    <link href="./assets/css/bootstrap.css" rel="stylesheet">
+    <link href="./assets/css/application.css" rel="stylesheet">
+    <link href="./assets/css/jquery-ui-1.10.3.custom.css" rel="stylesheet">
+  </head>
+
+  <body>
+
+      <div class="page intra addlogo nobreadcrumb">
+          <div class="topNavContainer">
+              <ul id="topnav">
+              </ul>
+          </div>
+
+          <div id="header-region"></div>
+          <div class="page-container">
+              <div id="header">
+
+                  <div class="eylogo">
+                      <a href="/">
+                          <img src="assets/img/eytag200.png" alt="Ernst &amp; Young" />
+                      </a>
+                  </div>
+                  <!-- trigger -->
+                  <div id="mmenu">&equiv;</div>
+                  <!-- menu -->
+                  <h1 class="site-title">Contact List</h1>
+              </div>
+                  <div class="wrapcontent" style="width:100%; min-height:500px">
+                      <div class="hero">
+                          <img src="assets/img/936x305.png" alt="" height="205" width="936">
+                          <div class="headings" style="padding-top:20px">
+                              <h1 class="serviceheading">Contact List</h1>
+                              <h2 id="page">Contacts</h2>
+                          </div>
+                      </div>
+                      <div class="subnav" style="width:15%">
+                          <div class="localnav">
+                              <h3 class="bar">Menu</h3>
+                              <ul id="featuremenu" class="serviceslist">
+                                  <li id="contactsList" class="nav-current">
+                                      <a href="#contacts">All contacts</a>
+                                  </li>
+                                  <li id="emergencyList">
+                                      <a class="js-emergency" href="#emergencycontacts">Emergency Contacts</a>
+                                  </li>
+                              </ul>
+                          </div>
+                      </div>
+                      <div id="main-region" class="maincolumn" style="width:65%">
+                          <p>Here is static content in the web page. You'll notice that it gets replaced by our app as soon as we start it.</p>
+                      </div>
+                      <div id="dialog-region"></div>
+                      <div id="loading-region" class="maincolumn"></div>
+                  </div>
+                  </div>
+              </div>
+                  <script type="text/template" id="header-template">
+                      <ul id="nav" class="menubar"></ul>
+                  </script>
+                  <script type="text/template" id="header-link">
+                      <a href="#<%- url %>"><%- name %></a>
+                  </script>
+                  <script type="text/template" id="contact-list">
+                      <thead>
+                          <tr>
+                              <th>First Name</th>
+                              <th>Last Name</th>
+                              <th></th>
+                          </tr>
+                      </thead>
+                      <tbody></tbody>
+                  </script>
+                  <script type="text/template" id="contact-list-none">
+                      <td colspan="3">No contacts to display.</td>
+                  </script>
+                  <script type="text/template" id="contact-list-item">
+                      <td><%- firstName %></td>
+                      <td><%- lastName %></td>
+                      <td>
+                          <a href="#contacts/<%- id %>" class="btn btn-small js-show">
+                              <i class="icon-eye-open"></i>
+                              Show
+                          </a>
+                          <a href="#contacts/<%- id %>/edit" class="btn btn-small js-edit">
+                              <i class="icon-pencil"></i>
+                              Edit
+                          </a>
+                          <button class="btn btn-small js-delete">
+                              <i class="icon-remove"></i>
+                              Delete
+                          </button>
+                      </td>
+                  </script>
+
+                  <script type="text/template" id="emergency-list-item">
+                      <td><%- firstName %></td>
+                      <td><%- lastName %></td>
+                      <td>
+                          <button class="btn btn-small js-remove">
+                              <i class="icon-remove"></i>
+                              Remove emergency contact
+                          </button>
+                      </td>
+                  </script>
+                  <script type="text/template" id="missing-contact-view">
+                      <div class="alert alert-error">This contact doesn't exist !</div>
+                  </script>
+                  <script type="text/template" id="contact-view">
+                      <h1><%- firstName %> <%- lastName %></h1>
+                      <a href="#contacts/<%- id %>/edit" class="btn btn-small js-edit">
+                          <i class="icon-pencil"></i>
+                          Edit this contact
+                      </a>
+                      <p><strong>Phone number:</strong> <%- phoneNumber %></p>
+                      <p><strong>Emergency contact?</strong> <%- emergency %></p>
+                  </script>
+                  <script type="text/template" id="loading-view">
+                      <!--<h1><%- title %></h1>
+                      <p><%- message %></p>-->
+                      <div id="spinner"></div>
+                  </script>
+                  <script type="text/template" id="contact-form">
+                      <form>
+                          <div class="control-group">
+                              <label for="contact-firstName" class="control-label">First name:</label>
+                              <input id="contact-firstName" name="firstName" type="text" value="<%- firstName %>" />
+                          </div>
+                          <div class="control-group">
+                              <label for="contact-lastName" class="control-label">Last name:</label>
+                              <input id="contact-lastName" name="lastName" type="text" value="<%- lastName %>" />
+                          </div>
+                          <div class="control-group">
+                              <label for="contact-phoneNumber" class="control-label">Phone number:</label>
+                              <input id="contact-phoneNumber" name="phoneNumber" type="text" value="<%- phoneNumber %>" />
+                          </div>
+                          <div class="control-group">
+                              <label for="contact-emergency" class="control-label">Emergency Contact? </label>
+                              <input id="contact-emergency" name="emergency" type="checkbox" value="<%- emergency %>"/>
+                          </div>
+                          <button class="btn js-submit">Save</button>
+                      </form>
+                  </script>
+                  <script type="text/template" id="contact-list-layout">
+                      <div id="panel-region"></div>
+                      <div id="contacts-region"></div>
+                  </script>
+                  <script type="text/template" id="contact-list-panel">
+                      <button class="btn btn-primary js-new">New contact</button>
+                      <form id="filter-form" class="form-search form-inline pull-right">
+                          <div class="input-append">
+                              <input type="text" class="span2 search-query js-filter-criterion" style="height:30px">
+                              <button type="submit" class="btn">Filter contacts</button>
+                          </div>
+                      </form>
+                  </script>
+                  <script type="text/template" id="empty-list-panel">
+                      <div style="height:30px"></div>
+                  </script>
+                  <script type="text/template" id="about-message">
+                      <h1>About this application</h1>
+                      <p>Christian Light</p>
+                      <p>1/12/2016</p>
+                  </script>
+
+
+                  <script src="./assets/js/vendor/jquery.js"></script>
+                  <script src="./assets/js/vendor/jquery-ui-1.10.3.js"></script>
+                  <script src="./assets/js/vendor/json2.js"></script>
+                  <script src="./assets/js/vendor/underscore.js"></script>
+                  <script src="./assets/js/vendor/backbone.js"></script>
+                  <script src="./assets/js/vendor/backbone.picky.js"></script>
+                  <script src="./assets/js/vendor/backbone.syphon.js"></script>
+                  <script src="./assets/js/vendor/backbone.localstorage.js"></script>
+                  <script src="./assets/js/vendor/backbone.marionette.js"></script>
+                  <script src="./assets/js/vendor/spin.js"></script>
+                  <script src="./assets/js/vendor/spin.jquery.js"></script>
+                  <script src="./assets/js/app.js"></script>
+                  <script src="./assets/js/apps/config/storage/localstorage.js"></script>
+                  <script src="./assets/js/entities/common.js"></script>
+                  <script src="./assets/js/entities/header.js"></script>
+                  <script src="./assets/js/entities/contact.js"></script>
+                  <script src="./assets/js/common/views.js"></script>
+                  <script src="./assets/js/apps/contacts/contacts_app.js"></script>
+                  <script src="./assets/js/apps/contacts/common/views.js"></script>
+                  <script src="./assets/js/apps/contacts/list/list_view.js"></script>
+                  <script src="./assets/js/apps/contacts/list/list_controller.js"></script>
+                  <script src="./assets/js/apps/contacts/show/show_view.js"></script>
+                  <script src="./assets/js/apps/contacts/show/show_controller.js"></script>
+                  <script src="./assets/js/apps/contacts/edit/edit_view.js"></script>
+                  <script src="./assets/js/apps/contacts/edit/edit_controller.js"></script>
+                  <script src="./assets/js/apps/contacts/new/new_view.js"></script>
+                  <script src="./assets/js/apps/about/about_app.js"></script>
+                  <script src="./assets/js/apps/about/show/show_view.js"></script>
+                  <script src="./assets/js/apps/about/show/show_controller.js"></script>
+                  <script src="./assets/js/apps/header/header_app.js"></script>
+                  <script src="./assets/js/apps/header/list/list_view.js"></script>
+                  <script src="./assets/js/apps/header/list/list_controller.js"></script>
+                  <script src="assets/js/apps/contacts/emergency/emergency_view.js"></script>
+                  <script type="text/javascript">
+                      ContactManager.start();
+                  </script>
+      <script type="text/javascript">
+    // menu functionality
+    $(document).ready(function () {
+        $('.serviceslist > li').on('click', function (event) {
+            var thisDropDownMenu = $(this).siblings();
+
+            if (thisDropDownMenu.hasClass('nav-current')) {
+                thisDropDownMenu.removeClass('nav-current');
+                $(this).addClass('nav-current');
+            }
+        });
+    });
+      </script>
+</body>
+</html>
